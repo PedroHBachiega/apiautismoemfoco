@@ -3,7 +3,7 @@ name: Deploy API C# para Azure
 on:
   push:
     branches:
-      - main # O branch que acionará o deploy
+      - master # O branch que acionará o deploy
 
 env:
   AZURE_WEBAPP_NAME: autismoemfoco-crudltypeaqeagru
