@@ -1,0 +1,40 @@
+name: Deploy API C# para Azure
+
+on:
+  push:
+    branches:
+      - main # O branch que acionará o deploy
+
+env:
+  AZURE_WEBAPP_NAME: autismoemfoco-crudltypeaqeagru
+  API_PROJECT_PATH: 'AutismoEmFoco.API/AutismoEmFoco.API.csproj' 
+  DOTNET_VERSION: '6.0.x' 
+  PUBLISH_OUTPUT_PATH: '${{ github.workspace }}/publish'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do Código
+      uses: actions/checkout@v4
+
+    - name: Configurar .NET SDK (Versão 6.x)
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore de Dependências e Build
+      run: |
+        dotnet restore ${{ env.API_PROJECT_PATH }}
+        dotnet build ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore
+        
+    - name: Publicar o Projeto
+      run: dotnet publish ${{ env.API_PROJECT_PATH }} -c Release -o ${{ env.PUBLISH_OUTPUT_PATH }}
+      
+    - name: Deploy para Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # Uso do Segredo
+        package: ${{ env.PUBLISH_OUTPUT_PATH }}

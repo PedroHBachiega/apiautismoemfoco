@@ -68,8 +68,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("Default", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:5173",
+        policy.WithOrigins(   
+            "http://localhost:5173", //para dev local
             "https://autismoemfoco-9117e.web.app",
             "https://autismoemfoco-9117e.firebaseapp.com"
         ).AllowAnyHeader().AllowAnyMethod();
