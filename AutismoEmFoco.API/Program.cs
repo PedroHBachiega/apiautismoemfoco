@@ -96,5 +96,5 @@ app.UseCors("Default");
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGet("/", () => "API Autismo em Foco está online 🚀");
 app.Run();
